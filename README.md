@@ -30,11 +30,9 @@ const GoogleAnalyticsScript = () => {
 
 It is recommended to use the `isConsentGivenFor` function to check if the user has given consent for a vendor instead of using the `consentStatus` object as the function will handle edge-cases like non-existent vendors or if GDPR doesn't apply.
 
-The hook automatically adds an event listener to the Consent Manager so your component will re-render when the user's consent status changes.
+The hook automatically adds an event listener to the Consent Manager so your component will re-render when the user's consent status changes. The hook also handles the case where the Consent Manager is not available yet and will automatically retry adding its event listener until it finds the API - this way you won't have to make sure ConsentManager.net is fully loaded yet before using the hook.
 
-The hook also handles the case where the Consent Manager is not available yet and will automatically retry adding its event listener until it finds the API - this way you won't have to make sure ConsentManager.net is fully loaded yet before using the hook.
-
-It is compatible with SSR and contains TypeScript definitions.
+It is compatible with SSR and contains TypeScript definitions. The hook does **not** load the ConsentManager.net script - you should add the `<script>` tag provided by them somewhere in your code, the hook only gives you access to its status.
 
 ## License
 
