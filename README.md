@@ -34,6 +34,8 @@ The hook automatically adds an event listener to the Consent Manager so your com
 
 The hook also handles the case where the Consent Manager is not available yet and will automatically retry adding its event listener until it finds the API - this way you won't have to make sure ConsentManager.net is fully loaded yet before using the hook.
 
+It is compatible with SSR and contains TypeScript definitions.
+
 ## License
 
 MIT © [vantezzen](https://github.com/vantezzen)

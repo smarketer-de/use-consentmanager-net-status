@@ -11,37 +11,6 @@ declare global {
   }
 }
 
-const updateConsentStatus = (
-  consentStatus: ConsentStatus,
-  setConsentStatus: (status: ConsentStatus) => void
-) => {
-  const retryLater = () => {
-    setTimeout(updateConsentStatus, 1000);
-  };
-
-  if (!window.__cmp) {
-    retryLater();
-    return;
-  }
-
-  const rawStatus = window.__cmp("getCMPData");
-  if (!rawStatus && !rawStatus.vendorsList) {
-    retryLater();
-    return;
-  }
-
-  const status: ConsentStatus = {
-    gdprApplies: rawStatus.gdprApplies,
-  };
-  for (const vendor of rawStatus.vendorsList) {
-    status[vendor.name] = rawStatus.vendorConsents[vendor.id] === true;
-  }
-
-  if (JSON.stringify(status) !== JSON.stringify(consentStatus)) {
-    setConsentStatus(status);
-  }
-};
-
 const addCmpListener = (triggerConsentUpdate: () => void) => {
   if (!window.__cmp) {
     setTimeout(addCmpListener, 200);
@@ -89,14 +58,39 @@ export default function useConsentmanagerNetStatus() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const triggerConsentUpdate = () => {
-      updateConsentStatus(consentStatus, setConsentStatus);
+    const updateConsentStatus = () => {
+      const retryLater = () => {
+        setTimeout(updateConsentStatus, 1000);
+      };
+
+      if (!window.__cmp) {
+        retryLater();
+        return;
+      }
+
+      const rawStatus = window.__cmp("getCMPData");
+      if (!rawStatus && !rawStatus.vendorsList) {
+        retryLater();
+        return;
+      }
+
+      const status: ConsentStatus = {
+        gdprApplies: rawStatus.gdprApplies,
+      };
+      for (const vendor of rawStatus.vendorsList) {
+        status[vendor.name] = rawStatus.vendorConsents[vendor.id] === true;
+      }
+
+      if (JSON.stringify(status) !== JSON.stringify(consentStatus)) {
+        setConsentStatus(status);
+      }
     };
-    triggerConsentUpdate();
-    addCmpListener(triggerConsentUpdate);
+
+    updateConsentStatus();
+    addCmpListener(updateConsentStatus);
 
     return () => {
-      removeCmpListener(triggerConsentUpdate);
+      removeCmpListener(updateConsentStatus);
     };
   }, []);
 
