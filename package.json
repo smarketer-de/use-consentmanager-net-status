@@ -1,10 +1,10 @@
 {
   "name": "use-consentmanager-net-status",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Hook to get the current status of the ConsentManager.net CMP on the page",
   "author": "vantezzen",
   "license": "MIT",
-  "repository": "vantezzen/use-consentmanager-net-status",
+  "repository": "smarketer-de/use-consentmanager-net-status",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -22,9 +22,8 @@
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build"
   },
-  "dependencies": {},
   "peerDependencies": {
-    "react": "^16.9.0"
+    "react": ">=16.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
