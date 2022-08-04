@@ -1,4 +1,4 @@
-# use-consentmanager-net-status
+# useConsentmanagerNetStatus
 
 > Hook to get the current status of the ConsentManager.net CMP on the page
 
@@ -13,19 +13,26 @@ npm install --save use-consentmanager-net-status
 ## Usage
 
 ```tsx
-import * as React from 'react'
+import * as React from "react";
 
-import { useMyHook } from 'use-consentmanager-net-status'
+import useConsentmanagerNetStatus from "use-consentmanager-net-status";
 
-const Example = () => {
-  const example = useMyHook()
-  return (
-    <div>
-      {example}
-    </div>
-  )
-}
+const GoogleAnalyticsScript = () => {
+  const { isConsentGivenFor } = useConsentmanagerNetStatus();
+  return <div>{isConsentGivenFor("Google Analytics") && <script ... />}</div>;
+};
 ```
+
+`useConsentmanagerNetStatus` returns an object with two properties:
+
+- `isConsentGivenFor(vendorName)`: Function that takes a vandor name and returns the consent status for that vendor.
+- `consentStatus`: An object of all the vendor names and their consent status (e.g. `{"Google Analytics": true}`).
+
+It is recommended to use the `isConsentGivenFor` function to check if the user has given consent for a vendor instead of using the `consentStatus` object as the function will handle edge-cases like non-existent vendors or if GDPR doesn't apply.
+
+The hook automatically adds an event listener to the Consent Manager so your component will re-render when the user's consent status changes.
+
+The hook also handles the case where the Consent Manager is not available yet and will automatically retry adding its event listener until it finds the API - this way you won't have to make sure ConsentManager.net is fully loaded yet before using the hook.
 
 ## License
 
