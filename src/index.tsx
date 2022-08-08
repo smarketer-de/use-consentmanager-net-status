@@ -69,7 +69,11 @@ export default function useConsentmanagerNetStatus() {
       }
 
       const rawStatus = window.__cmp("getCMPData");
-      if (!rawStatus && !rawStatus.vendorsList) {
+      if (
+        typeof rawStatus !== "object" ||
+        rawStatus === null ||
+        !("vendorList" in rawStatus)
+      ) {
         retryLater();
         return;
       }
