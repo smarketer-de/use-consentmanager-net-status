@@ -1,6 +1,6 @@
 {
   "name": "use-consentmanager-net-status",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Hook to get the current status of the ConsentManager.net CMP on the page",
   "author": "vantezzen",
   "license": "MIT",

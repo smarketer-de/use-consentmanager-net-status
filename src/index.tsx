@@ -72,7 +72,7 @@ export default function useConsentmanagerNetStatus() {
       if (
         typeof rawStatus !== "object" ||
         rawStatus === null ||
-        !("vendorList" in rawStatus)
+        !("vendorsList" in rawStatus)
       ) {
         retryLater();
         return;
